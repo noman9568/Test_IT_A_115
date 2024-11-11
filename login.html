@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 120vh;
+    }
+
+    .login {
+      width: 400px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    input {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 20%;
+      padding: 10px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="login">
+      <h2>Login</h2>
+      <input type="text" placeholder="Username" id="username">
+      <input type="password" placeholder="Password" id="password">
+      <button>Login</button>
+    </div>
+  </div>
+  <script>
+    let user = [
+      { username: "admin", password: "admin" },
+      { username: "user", password: "user" }
+    ];
+
+    let username = document.getElementById("username");
+    let password = document.getElementById("password");
+    let button = document.querySelector("button");
+
+    button.addEventListener("click", function() {
+      let u = username.value;
+      let p = password.value;
+      let check = false;
+      for (let i = 0; i < user.length; i++) {
+        if (u === user[i].username && p === user[i].password) {
+          check = true;
+          break;
+        }
+      }
+      if (check) {
+        window.location.href = "dashboard.html";
+      } else {
+        alert("Invalid Login Details!");
+      }
+    });
+  </script>
+</body>
+</html>

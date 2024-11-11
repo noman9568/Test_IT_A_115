@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <style>
+    .container {
+      margin-top: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-family: "Lato", sans-serif;
+    }
+    .top {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      width: max-content;
+      text-align: center;
+      color: #28a745;
+      font-size: 35px;
+      margin-bottom: 30px;
+      background-color: yellow;
+    }
+    .heading {
+      text-align: center;
+      font-size: 35px;
+      font-weight: 600;
+      color: #28a745;
+    }
+    button {
+      padding: 18px 13px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 19px;
+      margin-top: 20px;
+    }
+    select {
+      height: 30px;
+      width: 110px;
+      font-size: 18px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .container2 {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    #logout {
+      width: 90px;
+      padding: 10px;
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 19px;
+      margin-top: 20px;
+    }
+    .list ul {
+      list-style: none;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top">
+      <h1>Dashboard</h1>
+      <div class="heading">Welcome <span></span></div>
+    </div>
+    <div class="container2">
+      <div class="content">
+        <button onclick="fetchUser()" class="fetchbtn">Fetch Top 10 GitHub Users</button>
+        <select>
+          <option value="default">Default</option>
+          <option value="alphabetical">Alphabetical</option>
+        </select>
+      </div>
+      <div class="list">
+        <ul></ul>
+      </div>
+      <button id="logout">Logout</button>
+    </div>
+  </div>
+  
+  <script>
+    let gitusers = [];
+    let list = document.querySelector(".list ul");
+    let button = document.querySelector(".fetchbtn");
+    let select = document.querySelector("select");
+    let logout = document.getElementById("logout");
+
+    function fetchUser() {
+      fetch("https://api.github.com/users")
+        .then(response => response.json())
+        .then(data => {
+          gitusers = data.slice(0, 10);
+          displayUsers(gitusers);
+        });
+    }
+
+    function displayUsers(users) {
+      list.innerHTML = "";
+      users.forEach(user => {
+        let li = document.createElement("li");
+        let a = document.createElement("a");
+        a.href = `https://github.com/${user.login}`;
+        a.textContent = user.login;
+        li.appendChild(a);
+        list.appendChild(li);
+      });
+    }
+
+    select.addEventListener("change", () => {
+      if (select.value === "alphabetical") {
+        gitusers.sort((a, b) => a.login.localeCompare(b.login));
+        displayUsers(gitusers);
+      } else {
+        displayUsers(gitusers);
+      }
+    });
+
+    logout.addEventListener("click", function() {
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+</html>
